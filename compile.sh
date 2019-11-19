@@ -41,6 +41,9 @@ check_patch_is_applied()
     fi
 }
 
+git config --global user.email "azure@devops.com"
+git config --global user.name "Azure DevOps"
+
 # Read the Android Wiki http://wiki.videolan.org/AndroidCompile
 # Setup all that stuff correctly.
 # Get the latest Android SDK Platform or modify numbers in configure.sh and libvlc/default.properties.
