@@ -266,7 +266,7 @@ fi
 ####################
 
 TESTED_HASH=46d459f
-VLC_REPOSITORY=https://git.videolan.org/git/vlc/vlc-3.0.git
+VLC_REPOSITORY=https://github.com/videolan/vlc-3.0.git
 if [ ! -d "vlc" ]; then
     diagnostic "VLC sources: not found, cloning"
     git clone "${VLC_REPOSITORY}" vlc || fail "VLC sources: git clone failed"
