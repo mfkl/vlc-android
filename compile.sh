@@ -278,6 +278,7 @@ if [ ! -d "vlc" ]; then
     diagnostic "VLC sources: applying custom patches"
     # Keep Message-Id inside commits description to track them afterwards
     git am --message-id ../libvlc/patches/vlc3/*.patch || fail "VLC sources: cannot apply custom patches"
+    cp share/vlc.appdata.xml.in.in share/vlc.appdata.xml
     cd ..
 else
     diagnostic "VLC source: found sources, leaving untouched"
