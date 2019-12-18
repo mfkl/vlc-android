@@ -1,0 +1,76 @@
+From 94040ac64d9d053c0a06ca61094aa22f02b6c3b7 Mon Sep 17 00:00:00 2001
+Message-Id: <360c58b6cb05568c39aac668c6bb3ba6a5a9d29e.1571382591.git.thomas@gllm.fr>
+In-Reply-To: <253998cefd559e3e1103788d6a6c7466ec5f1faa.1571382591.git.thomas@gllm.fr>
+References: <253998cefd559e3e1103788d6a6c7466ec5f1faa.1571382591.git.thomas@gllm.fr>
+From: Adrien Maglo <magsoft@videolan.org>
+Date: Fri, 29 Mar 2019 15:28:10 +0100
+Subject: [PATCH] core: add a force-equirectangular option
+
+---
+ src/input/es_out.c  | 4 ++++
+ src/input/var.c     | 3 ++-
+ src/libvlc-module.c | 8 ++++++++
+ 3 files changed, 14 insertions(+), 1 deletion(-)
+
+diff --git a/src/input/es_out.c b/src/input/es_out.c
+index 5a2b194688..7f4df84acf 100644
+--- a/src/input/es_out.c
++++ b/src/input/es_out.c
+@@ -1576,6 +1576,10 @@ static es_out_id_t *EsOutAddSlave( es_out_t *out, const es_format_t *fmt, es_out
+     es->i_meta_id = p_sys->i_id++; /* always incremented */
+     es->b_scrambled = false;
+ 
++    bool b_forceEquirectangular = var_GetBool( p_input, "force-equirectangular" );
++    if (b_forceEquirectangular)
++        es->fmt.video.projection_mode = PROJECTION_MODE_EQUIRECTANGULAR;
++
+     switch( es->fmt.i_cat )
+     {
+     case AUDIO_ES:
+diff --git a/src/input/var.c b/src/input/var.c
+index 631b571c19..2b448c655b 100644
+--- a/src/input/var.c
++++ b/src/input/var.c
+@@ -474,6 +474,8 @@ void input_ConfigVarInit ( input_thread_t *p_input )
+                     VLC_VAR_INTEGER | VLC_VAR_DOINHERIT);
+     }
+ 
++    var_Create( p_input, "force-equirectangular", VLC_VAR_BOOL | VLC_VAR_DOINHERIT );
++
+     var_Create( p_input, "can-seek", VLC_VAR_BOOL );
+     var_SetBool( p_input, "can-seek", true ); /* Fixed later*/
+ 
+@@ -849,4 +851,3 @@ static int FrameNextCallback( vlc_object_t *p_this, char const *psz_cmd,
+ 
+     return VLC_SUCCESS;
+ }
+-
+diff --git a/src/libvlc-module.c b/src/libvlc-module.c
+index 0c06bc8a98..4aa3842455 100644
+--- a/src/libvlc-module.c
++++ b/src/libvlc-module.c
+@@ -694,6 +694,11 @@ static const char *const ppsz_prefres[] = {
+ 
+ #define INPUT_LUA_TEXT N_( "Disable all lua plugins" )
+ 
++#define FORCE_EQUIRECTANGULAR_TEXT N_("Force the equirectangular projection")
++#define FORCE_EQUIRECTANGULAR_LONGTEXT N_( \
++    "This option can be used to force the equirectangular projection " \
++    "for a 360° input." )
++
+ // DEPRECATED
+ #define SUB_CAT_LONGTEXT N_( \
+     "These options allow you to modify the behavior of the subpictures " \
+@@ -1932,6 +1937,9 @@ vlc_module_begin ()
+ 
+     add_bool( "lua", true, INPUT_LUA_TEXT, INPUT_LUA_TEXT, true );
+ 
++    add_bool( "force-equirectangular", false,
++              FORCE_EQUIRECTANGULAR_TEXT, FORCE_EQUIRECTANGULAR_LONGTEXT, false );
++
+ /* Decoder options */
+     set_subcategory( SUBCAT_INPUT_VCODEC )
+     add_category_hint( N_("Decoders"), CODEC_CAT_LONGTEXT , true )
+-- 
+2.24.0
+
