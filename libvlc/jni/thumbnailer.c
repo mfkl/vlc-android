@@ -317,7 +317,7 @@ Java_org_videolan_libvlc_util_VLCUtil_nativeGetThumbnail(JNIEnv *env,
     pthread_mutex_unlock(&sys->doneMutex);
 
     /* Stop and release the media player. */
-    libvlc_media_player_stop(mp);
+    libvlc_media_player_stop_async(mp);
     libvlc_event_detach(libvlc_media_player_event_manager(mp),
                         libvlc_MediaPlayerPositionChanged,
                         thumbnailer_event, sys);

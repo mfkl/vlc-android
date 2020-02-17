@@ -724,8 +724,5 @@ Java_org_videolan_libvlc_Media_nativeGetStats(JNIEnv *env, jobject thiz)
                                           stats.i_displayed_pictures,
                                           stats.i_lost_pictures,
                                           stats.i_played_abuffers,
-                                          stats.i_lost_abuffers,
-                                          stats.i_sent_packets,
-                                          stats.i_sent_bytes,
-                                          stats.f_send_bitrate);
+                                          stats.i_lost_abuffers);
 }

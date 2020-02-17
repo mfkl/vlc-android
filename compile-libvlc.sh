@@ -832,4 +832,6 @@ OUT_DBG_DIR=.dbg/${ANDROID_ABI}
 
 mkdir -p $OUT_DBG_DIR
 cp -a libvlc/jni/obj/local/${ANDROID_ABI}/*.so ${OUT_DBG_DIR}
+if [ ${BUILD_ML} = "1" ];then
 cp -a medialibrary/jni/obj/local/${ANDROID_ABI}/*.so ${OUT_DBG_DIR}
+fi

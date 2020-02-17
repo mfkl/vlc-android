@@ -274,15 +274,21 @@ Java_org_videolan_libvlc_GLRenderer_nativeInit(JNIEnv *env, jobject thiz,
 
     pthread_mutex_init(&glr->lock, NULL);
 
-    libvlc_video_set_opengl_callbacks(mpobj->u.p_mp,
-                                      libvlc_gl_engine_gles2,
-                                      gl_setup,
-                                      gl_cleanup,
-                                      gl_resize,
-                                      gl_swap,
-                                      gl_makeCurrent,
-                                      gl_getProcAddress,
-                                      glr);
+    // libvlc_video_set_output_callbacks(mpobj->u.p_mp, 
+    //                                   libvlc_video_engine_opengl,
+    //         gl_setup, gl_cleanup, nullptr, gl_resize, gl_swap,
+    //         gl_makeCurrent, gl_getProcAddress, nullptr, nullptr,
+    //         nullptr);
+
+    // libvlc_video_set_opengl_callbacks(mpobj->u.p_mp,
+    //                                   libvlc_video_engine_gles2,
+    //                                   gl_setup,
+    //                                   gl_cleanup,
+    //                                   gl_resize,
+    //                                   gl_swap,
+    //                                   gl_makeCurrent,
+    //                                   gl_getProcAddress,
+    //                                   glr);
 
     GLRenderer_setInstance(env, thiz, glr);
 }

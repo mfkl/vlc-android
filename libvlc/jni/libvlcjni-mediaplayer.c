@@ -317,7 +317,7 @@ Java_org_videolan_libvlc_MediaPlayer_nativeStop(JNIEnv *env, jobject thiz)
     if (!p_obj)
         return;
 
-    libvlc_media_player_stop(p_obj->u.p_mp);
+    libvlc_media_player_stop_async(p_obj->u.p_mp);
 }
 
 void
