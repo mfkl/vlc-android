@@ -192,8 +192,8 @@ jint JNI_OnLoad(JavaVM *vm, void *reserved)
               "org/videolan/libvlc/RendererDiscoverer$Description", true);
     GET_CLASS(fields.Dialog.clazz,
               "org/videolan/libvlc/Dialog", true);
-    GET_CLASS(fields.GLRenderer.clazz,
-              "org/videolan/libvlc/GLRenderer", true);
+    // GET_CLASS(fields.GLRenderer.clazz,
+    //           "org/videolan/libvlc/GLRenderer", true);
 
     GET_ID(GetFieldID,
            fields.VLCObject.mInstanceID,
@@ -205,10 +205,10 @@ jint JNI_OnLoad(JavaVM *vm, void *reserved)
            fields.MediaPlayer.Equalizer.clazz,
            "mInstance", "J");
 
-    GET_ID(GetFieldID,
-           fields.GLRenderer.mInstanceID,
-           fields.GLRenderer.clazz,
-           "mInstance", "J");
+    // GET_ID(GetFieldID,
+    //        fields.GLRenderer.mInstanceID,
+    //        fields.GLRenderer.clazz,
+    //        "mInstance", "J");
 
     GET_ID(GetMethodID,
            fields.VLCObject.dispatchEventFromNativeID,
