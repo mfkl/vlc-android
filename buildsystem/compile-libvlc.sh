@@ -345,6 +345,7 @@ VLC_CONFIGURE_ARGS="\
     --disable-vnc \
     --enable-jpeg \
     --enable-smb2 \
+    --disable-dav1d \
 "
 
 ########################
@@ -637,43 +638,18 @@ rm ${REDEFINED_VLC_MODULES_DIR}/syms
 ###########################
 
 VLC_MODULES=$(avlc_find_modules ${REDEFINED_VLC_MODULES_DIR})
-VLC_CONTRIB_LDFLAGS=$(for i in $(/bin/ls $VLC_CONTRIB/lib/pkgconfig/*.pc); do PKG_CONFIG_PATH="$VLC_CONTRIB/lib/pkgconfig/" pkg-config --libs $i; done |xargs)
 echo -e "ndk-build vlc"
 
 touch $VLC_OUT_PATH/dummy.cpp
 
 # This is ugly but it's better to use the linker from ndk-build that will use
 # the proper linkflags depending on ABI/API
-rm -rf $VLC_OUT_PATH/Android.mk
-cat << 'EOF' > $VLC_OUT_PATH/Android.mk
-LOCAL_PATH := $(call my-dir)
-include $(CLEAR_VARS)
-LOCAL_MODULE    := libvlc
-LOCAL_SRC_FILES := libvlcjni-modules.c libvlcjni-symbols.c dummy.cpp
-LOCAL_LDFLAGS := -L$(VLC_CONTRIB)/lib
-LOCAL_LDLIBS := \
-    $(VLC_MODULES) \
-    $(VLC_BUILD_DIR)/lib/.libs/libvlc.a \
-    $(VLC_BUILD_DIR)/src/.libs/libvlccore.a \
-    $(VLC_BUILD_DIR)/compat/.libs/libcompat.a \
-    $(VLC_CONTRIB_LDFLAGS) \
-    -ldl -lz -lm -llog \
-    -la52 -ljpeg \
-    -llua \
-    $(VLC_LDFLAGS)
-LOCAL_CXXFLAGS := -std=c++11
-include $(BUILD_SHARED_LIBRARY)
-EOF
+
 
 $NDK_BUILD -C $VLC_OUT_PATH/.. \
     APP_STL="c++_shared" \
     APP_CPPFLAGS="-frtti -fexceptions" \
     VLC_SRC_DIR="$VLC_SRC_DIR" \
-    VLC_BUILD_DIR="$VLC_BUILD_DIR" \
-    VLC_CONTRIB="$VLC_CONTRIB" \
-    VLC_CONTRIB_LDFLAGS="$VLC_CONTRIB_LDFLAGS" \
-    VLC_MODULES="$VLC_MODULES" \
-    VLC_LDFLAGS="$VLC_LDFLAGS" \
     APP_BUILD_SCRIPT=ndk/Android.mk \
     APP_PLATFORM=android-${ANDROID_API} \
     APP_ABI=${ANDROID_ABI} \
